@@ -1,0 +1,49 @@
+package Scene;
+
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
+public class SceneManager {
+    public SceneManager()  {}
+
+    public boolean Initialize() {
+        return true;
+    }
+
+    public void Finalize() {
+        if (CurrentScene != null)
+            CurrentScene.OnExit();
+
+        RootScene = null;
+    }
+
+    public void Update(float _dt) {
+        if (NextScene != null) {
+            if (CurrentScene != null)
+                CurrentScene.OnExit();
+
+            CurrentScene = NextScene;
+            NextScene = null;
+
+            if (!CurrentScene.OnEnter())
+                throw new RuntimeException("Failed to enter scene.");
+        }
+
+        if (CurrentScene != null)
+            CurrentScene.Update(_dt);
+    }
+
+    public final void SetRootScene(AppScene _scene) {
+        NextScene = _scene;
+        RootScene = _scene;
+    }
+
+    public final void SetNextScene(AppScene _scene) {
+        NextScene = _scene;
+    }
+
+    private AppScene CurrentScene;
+    private AppScene RootScene;
+    private AppScene NextScene;
+}
