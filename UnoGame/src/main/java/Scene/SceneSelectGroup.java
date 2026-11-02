@@ -1,11 +1,11 @@
 package Scene;
 
-import GuiFramework.GUITweakerDialog;
+import GuiFramework.Control.GUITweakerDialog;
 
 import java.util.ArrayList;
 
 public class SceneSelectGroup {
-    private record Entry(String Name, AppScene Scene) {}
+    private record Entry(String Name, SceneBase Scene) {}
 
     public SceneSelectGroup(SceneSelectScene _root, String _name) {
         Root = _root;
@@ -14,7 +14,7 @@ public class SceneSelectGroup {
         _root.AddGroup(this);
     }
 
-    public void AddScene(String _name, AppScene _scene) {
+    public void AddScene(String _name, SceneBase _scene) {
         SceneArray.add(new Entry(_name, _scene));
         Root.RegisterChildScene(_scene);
     }

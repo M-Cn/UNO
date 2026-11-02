@@ -2,7 +2,9 @@ package Main;
 
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public final class AppWindow {
@@ -18,11 +20,13 @@ public final class AppWindow {
     }
 
     public void SetStyle(String _value) {
-        if (AppRoot == null)
-            throw new RuntimeException("AppRoot is null");
+        if (AppRoot == null) throw new IllegalStateException("AppRoot is null");
+        if (_value != null) AppRoot.setStyle(_value);
+    }
 
-        if (_value != null)
-            AppRoot.setStyle(_value);
+    public void SetBackColor(Color _color) {
+        if (AppRoot == null) throw new IllegalStateException("AppWindow not initialized");
+        AppRoot.setBackground(_color != null ? Background.fill(_color) : null);
     }
 
     public Stage GetStage() { return FXStage; }

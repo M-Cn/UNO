@@ -1,5 +1,6 @@
-package GuiFramework;
+package GuiFramework.Control;
 
+import GuiFramework.GUIWidget;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
@@ -50,8 +51,8 @@ public final class GUITweakerGroup extends GUIWidget {
         for (GUIWidget w : Children) w.Refresh();
     }
 
-    @Override protected Node GetNode()            { return Pane; }
-    @Override protected boolean UsesLabelColumn() { return false; }   // the title bar already shows the name
+    @Override public Node GetNode()            { return Pane; }
+    @Override public boolean UsesLabelColumn() { return false; }   // the title bar already shows the name
 
     private final TitledPane Pane;
     private final GridPane Content;

@@ -1,5 +1,6 @@
-package GuiFramework;
+package GuiFramework.System;
 
+import GuiFramework.GUIWidget;
 import javafx.scene.layout.Pane;
 
 /** Transparent layer that hosts every dialog. Root of the widget tree: it has no parent, so it takes GUISystem directly. */
@@ -12,7 +13,7 @@ public final class GUIRootWindow extends GUIWidget {
         Layer.heightProperty().addListener((obs, oldV, newV) -> _onResize.run());
     }
 
-    @Override protected Pane GetNode() { return Layer; }     // covariant return: callers get Pane, not just Node
+    @Override public Pane GetNode() { return Layer; }     // covariant return: callers get Pane, not just Node
 
     private final Pane Layer;
 }

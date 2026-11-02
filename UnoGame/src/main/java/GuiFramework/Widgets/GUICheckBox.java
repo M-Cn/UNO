@@ -13,7 +13,7 @@ public class GUICheckBox extends GUIWidget {
         Box.selectedProperty().bindBidirectional(_value);
     }
 
-    @Override protected Node GetNode() { return Box; }
+    @Override public Node GetNode() { return Box; }
 
     private final BooleanProperty Value;
     private final CheckBox Box;

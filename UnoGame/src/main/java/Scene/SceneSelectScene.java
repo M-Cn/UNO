@@ -1,12 +1,13 @@
 package Scene;
 
-import GuiFramework.GUITweakerDialog;
+import GuiFramework.Control.GUITweakerDialog;
 import Main.UnoApp;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-public class SceneSelectScene extends AppScene {
+public class SceneSelectScene extends SceneBase {
     public SceneSelectScene(int _id, SceneManager _mgr) {
         super(_id, _mgr);
         SceneGroupArray = new ArrayList<SceneSelectGroup>();
@@ -14,7 +15,7 @@ public class SceneSelectScene extends AppScene {
 
     @Override
     public boolean Initialize() {
-        UnoApp.GetInstance().GetWindow().SetStyle("-fx-background-color: #1e5a32;");
+        UnoApp.GetInstance().GetWindow().SetBackColor(Color.rgb(128, 128, 128));
 
         Dialog = new GUITweakerDialog("SceneSelect", UnoApp.GetInstance().GetGUISystem().GetRootWindow(), EnumSet.of(GUITweakerDialog.DialogFlags.NO_CLOSE), 400, 900);
 

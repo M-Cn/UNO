@@ -1,4 +1,4 @@
-package GuiFramework;
+package GuiFramework.Control;
 
 import javafx.scene.Node;
 

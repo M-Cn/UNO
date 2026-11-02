@@ -1,10 +1,12 @@
-package GuiFramework;
+package GuiFramework.System;
 
+import GuiFramework.Control.GUITweakerDialog;
+import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import javafx.scene.text.Font;
+
+import java.util.Locale;
 
 public class GUISystem {
     public boolean Initialize() {
@@ -12,15 +14,19 @@ public class GUISystem {
         if (!WindowMgr.Initialize())
             return false;
 
-        ContentLayer = new StackPane();
-        StackPane appRoot = new StackPane(ContentLayer, WindowMgr.GetRootWindow().GetNode());
-
         return true;
     }
 
     public void Finalize() {
         if (WindowMgr != null)
             WindowMgr.Finalize();
+    }
+
+    public void SetFont(Font _font) {
+        String weight = _font.getStyle().toLowerCase().contains("bold") ? "bold" : "normal";
+        WindowMgr.GetRootWindow().GetNode().setStyle(String.format(Locale.ROOT,
+                "-fx-font-family: '%s'; -fx-font-size: %.1fpx; -fx-font-weight: %s;",
+                _font.getFamily(), _font.getSize(), weight));
     }
 
     public void RegisterWindow(GUITweakerDialog _dlg, int _x, int _y) {
@@ -44,12 +50,19 @@ public class GUISystem {
         return WindowMgr.GetRootWindow();
     }
 
-    public void SetContent(Parent _root) {
-        ContentLayer.getChildren().setAll(_root);
+    public Node GetNode() {
+        if (WindowMgr == null)
+            return null;
+
+        GUIRootWindow root = WindowMgr.GetRootWindow();
+
+        if (root == null)
+            return null;
+
+        return root.GetNode();
     }
 
     public GUIWindowManager GetWindowManager() { return WindowMgr; }
 
     private GUIWindowManager WindowMgr;
-    private StackPane ContentLayer;
 }

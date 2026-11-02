@@ -1,4 +1,4 @@
-package GuiFramework;
+package GuiFramework.Control;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;

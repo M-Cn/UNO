@@ -1,11 +1,14 @@
 package Main;
 
-import GuiFramework.GUISystem;
+import Draw.DrawSystem;
+import Font.FontManager;
+import GuiFramework.System.GUISystem;
 import Input.InputManager;
 import Scene.*;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -41,7 +44,10 @@ public class UnoApp extends Application {
         _Finalize();
     }
 
-    private void _Initialize() {}
+    private void _Initialize() {
+        FontMgr = new FontManager();
+        FontMgr.Register(FontManager.FontId.DEBUG, "Consolas", FontWeight.NORMAL, 14);
+    }
 
     private void _Update(float _dt) {
         InputMgr.Update();
@@ -51,11 +57,17 @@ public class UnoApp extends Application {
     private void _Start(Stage _stage) {
         Window = new AppWindow(_stage, 1280, 720);
 
+        DrawSys = new DrawSystem();
+        DrawSys.Initialize();
+
         InputMgr = new InputManager();
         InputMgr.Initialize(_stage);
 
         GUISys = new GUISystem();
         GUISys.Initialize();
+        GUISys.SetFont(FontMgr.Get(FontManager.FontId.DEBUG));
+
+        Window.AddLayer(GUISys.GetNode());
 
         SceneMgr = new SceneManager();
         SceneMgr.Initialize();
@@ -67,7 +79,7 @@ public class UnoApp extends Application {
         SceneSelectGroup mainGroup = new SceneSelectGroup(rootScene, "Main");
         SceneSelectGroup testGroup = new SceneSelectGroup(rootScene, "Test");
 
-        GameScene gameScene = new GameScene(1, SceneMgr);
+        UnoGameScene gameScene = new UnoGameScene(1, SceneMgr);
         mainGroup.AddScene("Game", gameScene);
 
         GUITestScene guiTestScene = new GUITestScene(10, SceneMgr);
@@ -75,8 +87,7 @@ public class UnoApp extends Application {
 
         SceneMgr.SetRootScene(rootScene);
 
-        String title = String.format("%s v%s", APP_NAME, GetAppVersionString());
-        _stage.setTitle(title);
+        _stage.setTitle(APP_NAME);
         _stage.show();
 
         MainLoop = new AnimationTimer() {
@@ -94,6 +105,8 @@ public class UnoApp extends Application {
     private void _Finalize() {
         if (SceneMgr != null) SceneMgr.Finalize();
         if (GUISys != null) GUISys.Finalize();
+        if (InputMgr != null) InputMgr.Finalize();
+        if (DrawSys != null) DrawSys.Finalize();
         if (MainLoop != null) MainLoop.stop();
     }
 
@@ -105,6 +118,8 @@ public class UnoApp extends Application {
     private AppWindow Window;
     private AnimationTimer MainLoop;
     private long LastFrameTime = -1;
+    private FontManager FontMgr;
+    private DrawSystem DrawSys;
     private GUISystem GUISys;
     private InputManager InputMgr;
     private SceneManager SceneMgr;

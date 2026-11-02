@@ -1,5 +1,6 @@
-package GuiFramework;
+package GuiFramework.System;
 
+import GuiFramework.Control.GUITweakerDialog;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -51,7 +52,7 @@ public class GUIWindowManager {
         RootWindow.GetNode().getChildren().add(node);
         node.relocate(_x, _y);
         node.addEventFilter(MouseEvent.MOUSE_PRESSED, ev -> SetCurrentWindow(_dlg));
-        _dlg.SetManagerCloseHook(() -> _OnDialogClosed(_dlg));   // separate from SetOnClose, so scenes can't overwrite it
+        _dlg.SetOnManagerClose(() -> _OnDialogClosed(_dlg));
 
         SetCurrentWindow(_dlg);
     }

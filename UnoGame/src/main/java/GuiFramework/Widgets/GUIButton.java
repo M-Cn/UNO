@@ -12,8 +12,8 @@ public final class GUIButton extends GUIWidget {
         Btn.setOnAction(ev -> _onClick.run());
     }
 
-    @Override protected Node GetNode()            { return Btn; }
-    @Override protected boolean UsesLabelColumn() { return false; }
+    @Override public Node GetNode()            { return Btn; }
+    @Override public boolean UsesLabelColumn() { return false; }
 
     private final Button Btn;
 }

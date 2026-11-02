@@ -1,9 +1,5 @@
 package Scene;
 
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-
 public class SceneManager {
     public SceneManager()  {}
 
@@ -34,16 +30,16 @@ public class SceneManager {
             CurrentScene.Update(_dt);
     }
 
-    public final void SetRootScene(AppScene _scene) {
+    public final void SetRootScene(SceneBase _scene) {
         NextScene = _scene;
         RootScene = _scene;
     }
 
-    public final void SetNextScene(AppScene _scene) {
+    public final void SetNextScene(SceneBase _scene) {
         NextScene = _scene;
     }
 
-    private AppScene CurrentScene;
-    private AppScene RootScene;
-    private AppScene NextScene;
+    private SceneBase CurrentScene;
+    private SceneBase RootScene;
+    private SceneBase NextScene;
 }

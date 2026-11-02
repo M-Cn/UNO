@@ -1,5 +1,7 @@
 package GuiFramework;
 
+import GuiFramework.System.GUISystem;
+
 import javafx.scene.Node;
 import javafx.scene.control.Tooltip;
 
@@ -33,9 +35,8 @@ public abstract class GUIWidget {
     public final GUIWidget GetParent() { return Parent; }
     public final GUISystem GetSys()    { return Sys; }
 
-    protected abstract Node GetNode();
-
-    protected boolean UsesLabelColumn() { return true; }
+    public abstract Node GetNode();
+    public boolean UsesLabelColumn() { return true; }
 
     protected final GUISystem Sys;
     protected final GUIWidget Parent;

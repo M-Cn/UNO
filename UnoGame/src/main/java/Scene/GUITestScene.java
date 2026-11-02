@@ -1,6 +1,6 @@
 package Scene;
 
-import GuiFramework.GUITweakerDialog;
+import GuiFramework.Control.GUITweakerDialog;
 import Input.InputManager;
 import Main.UnoApp;
 import javafx.beans.property.BooleanProperty;
@@ -9,7 +9,7 @@ import javafx.scene.input.KeyCode;
 
 import java.util.EnumSet;
 
-public class GUITestScene extends AppScene {
+public class GUITestScene extends SceneBase {
     public GUITestScene(int _id, SceneManager _mgr) {
         super(_id, _mgr);
     }

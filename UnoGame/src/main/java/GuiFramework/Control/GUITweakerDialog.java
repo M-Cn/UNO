@@ -1,5 +1,6 @@
-package GuiFramework;
+package GuiFramework.Control;
 
+import GuiFramework.GUIWidget;
 import GuiFramework.Widgets.GUIButton;
 import GuiFramework.Widgets.GUICheckBox;
 import javafx.beans.property.BooleanProperty;
@@ -65,6 +66,7 @@ public final class GUITweakerDialog extends GUIWidget {
     private StackPane _BuildTitleBar(String _name) {
         Label title = new Label(_name);
         title.setMouseTransparent(true);              // clicks fall through to the bar, so drag still works
+        title.setStyle("-fx-font-weight: bold;");
 
         HBox buttons = new HBox(4);
         buttons.setAlignment(Pos.CENTER_RIGHT);
@@ -144,7 +146,7 @@ public final class GUITweakerDialog extends GUIWidget {
         return group != null ? group : this;
     }
 
-    @Override protected Node GetNode() { return Root; }
+    @Override public Node GetNode() { return Root; }
 
     /** Outside a group there is no label column, so labelled widgets get a [label | control] row of their own. */
     private Node _WrapTopLevel(GUIWidget _widget) {
@@ -162,7 +164,7 @@ public final class GUITweakerDialog extends GUIWidget {
     public void SetOnRestore(Runnable _cb)  { OnRestore = _cb; }
 
     /** Window manager bookkeeping only; kept apart from SetOnClose so user callbacks can't replace it. */
-    void SetManagerCloseHook(Runnable _cb)  { ManagerCloseHook = _cb; }
+    public void SetOnManagerClose(Runnable _cb)  { OnManagerClose = _cb; }
 
     public double GetPosX() { return Root.getLayoutX(); }
     public double GetPosY() { return Root.getLayoutY(); }
@@ -170,7 +172,7 @@ public final class GUITweakerDialog extends GUIWidget {
     public void Close() {
         if (!(Root.getParent() instanceof Pane parent)) return;   // already closed: do nothing
         parent.getChildren().remove(Root);
-        if (ManagerCloseHook != null) ManagerCloseHook.run();
+        if (OnManagerClose != null) OnManagerClose.run();
         if (OnClose != null) OnClose.run();
     }
 
@@ -284,7 +286,7 @@ public final class GUITweakerDialog extends GUIWidget {
     private boolean ResizeL, ResizeR, ResizeT, ResizeB, bResizing;
     private double StartMouseX, StartMouseY, StartX, StartY, StartW, StartH;
 
-    private Runnable OnClose, OnCollapse, OnRestore, ManagerCloseHook;
+    private Runnable OnClose, OnCollapse, OnRestore, OnManagerClose;
 
     private final VBox Root;
     private final List<GUIWidget> Children = new ArrayList<>();
