@@ -1,5 +1,6 @@
 package Scene;
 
+import Draw.DrawSystem;
 import GuiFramework.Control.GUITweakerDialog;
 
 import java.util.TreeMap;
@@ -14,7 +15,7 @@ public class SceneBase {
     public boolean Initialize() { return true; }
     public void Finalize() {}
     public void Update(float _dt) {}
-
+    public void Draw(DrawSystem _drawSys) {}
     public boolean OnEnter() {
         return Initialize();
     }

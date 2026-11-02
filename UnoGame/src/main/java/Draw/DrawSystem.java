@@ -3,6 +3,7 @@ package Draw;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.transform.Affine;
 
 public final class DrawSystem {
     private static final class ResizableCanvas extends Canvas {
@@ -27,8 +28,16 @@ public final class DrawSystem {
 
     // Empty, for now.
     public void Finalize() {
-
     }
+
+    public void BeginFrame() {
+        GC.setTransform(new Affine());                                        // identity
+        GC.clearRect(0, 0, FXCanvas.getWidth(), FXCanvas.getHeight());
+    }
+
+    public void EndFrame() {}   // hook for overlays/stats later
+
+    public GraphicsContext GetContext() { return GC; }
 
     public Node GetNode() { return FXCanvas; }
 

@@ -1,5 +1,8 @@
 package Scene;
 
+import Draw.DrawSystem;
+import Draw.FontDrawContext;
+import Font.FontManager;
 import GuiFramework.Control.GUITweakerDialog;
 import Main.UnoApp;
 import javafx.scene.paint.Color;
@@ -41,6 +44,13 @@ public class SceneSelectScene extends SceneBase {
     @Override
     public void Update(float _dt) {
         super.Update(_dt);
+    }
+
+    @Override
+    public void Draw(DrawSystem _drawSys) {
+        FontDrawContext dc = new FontDrawContext(_drawSys.GetContext(), FontManager.FontId.DEBUG);
+        dc.SetColor(Color.rgb(255, 255, 255));
+        dc.DrawFormatText(800, 40, "Version: %s", UnoApp.GetAppVersionString());
     }
 
     public final void AddGroup(SceneSelectGroup _group) {

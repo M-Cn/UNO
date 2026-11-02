@@ -1,5 +1,7 @@
 package Scene;
 
+import Draw.DrawSystem;
+
 public class SceneManager {
     public SceneManager()  {}
 
@@ -28,6 +30,11 @@ public class SceneManager {
 
         if (CurrentScene != null)
             CurrentScene.Update(_dt);
+    }
+
+    public void Draw(DrawSystem _drawSys) {
+        if (CurrentScene != null)
+            CurrentScene.Draw(_drawSys);
     }
 
     public final void SetRootScene(SceneBase _scene) {

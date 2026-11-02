@@ -21,7 +21,7 @@ public class UnoApp extends Application {
     private static final int APP_VER_MINOR = 0;
     private static final int APP_VER_REVISION = 0;
 
-    private static String GetAppVersionString() {
+    public static String GetAppVersionString() {
         return String.format("%d.%d.%d",  APP_VER_MAJOR, APP_VER_MINOR, APP_VER_REVISION);
     }
 
@@ -54,11 +54,19 @@ public class UnoApp extends Application {
         SceneMgr.Update(_dt);
     }
 
+    private void _Draw() {
+        DrawSys.BeginFrame();
+        SceneMgr.Draw(DrawSys);
+        DrawSys.EndFrame();
+    }
+
     private void _Start(Stage _stage) {
         Window = new AppWindow(_stage, 1280, 720);
 
         DrawSys = new DrawSystem();
         DrawSys.Initialize();
+
+        Window.AddLayer(DrawSys.GetNode());
 
         InputMgr = new InputManager();
         InputMgr.Initialize(_stage);
@@ -96,6 +104,7 @@ public class UnoApp extends Application {
                 float dt = (LastFrameTime < 0) ? 0.0f : (_now - LastFrameTime) * 1E-9f;
                 LastFrameTime = _now;
                 _Update(dt);
+                _Draw();
             }
         };
 
@@ -111,6 +120,8 @@ public class UnoApp extends Application {
     }
 
     public AppWindow GetWindow() { return Window; }
+    public FontManager GetFontManager() { return FontMgr; }
+    public DrawSystem GetDrawSystem() { return DrawSys; }
     public GUISystem GetGUISystem() { return GUISys; }
     public InputManager GetInputManager() { return InputMgr; }
     public SceneManager GetSceneManager() { return SceneMgr; }
