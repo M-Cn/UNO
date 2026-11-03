@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class FontManager {
     public record FontKey(String Family, FontWeight Weight, double Size) {}
 
-    public enum FontId { DEBUG, TITLE, MENU }
+    public enum FontId { DEBUG, GAME }
 
     private final EnumMap<FontId, Font> Fonts = new EnumMap<>(FontId.class);
 

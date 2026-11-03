@@ -1,6 +1,7 @@
 package Main;
 
 import Draw.DrawSystem;
+import Draw.FontDrawContext;
 import Font.FontManager;
 import GuiFramework.System.GUISystem;
 import Input.InputManager;
@@ -12,6 +13,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Properties;
 
 public class UnoApp extends Application {
     private static UnoApp s_instance;
@@ -32,11 +34,12 @@ public class UnoApp extends Application {
     public static UnoApp GetInstance()  { return s_instance; }
 
     @Override
-    public void init() { _Initialize(); }
+    public void init() { _PreInitialize(); }
 
     @Override
-    public void start(Stage stage) throws IOException {
-        _Start(stage);
+    public void start(Stage _stage) throws IOException {
+        _Initialize(_stage);
+        _StartUpdate(_stage);
     }
 
     @Override
@@ -44,23 +47,14 @@ public class UnoApp extends Application {
         _Finalize();
     }
 
-    private void _Initialize() {
+    private void _PreInitialize() {
+        UpdateTickControl = new UpdateTickCtrl();
         FontMgr = new FontManager();
         FontMgr.Register(FontManager.FontId.DEBUG, "Consolas", FontWeight.NORMAL, 14);
+        FontMgr.Register(FontManager.FontId.GAME, "Uno", FontWeight.NORMAL, 14);
     }
 
-    private void _Update(float _dt) {
-        InputMgr.Update();
-        SceneMgr.Update(_dt);
-    }
-
-    private void _Draw() {
-        DrawSys.BeginFrame();
-        SceneMgr.Draw(DrawSys);
-        DrawSys.EndFrame();
-    }
-
-    private void _Start(Stage _stage) {
+    private void _Initialize(Stage _stage) {
         Window = new AppWindow(_stage, 1280, 720);
 
         DrawSys = new DrawSystem();
@@ -97,14 +91,41 @@ public class UnoApp extends Application {
 
         _stage.setTitle(APP_NAME);
         _stage.show();
+    }
 
+    private void _MainLoop(long _now) {
+        if (UpdateTickControl == null)
+            throw new IllegalStateException("UpdateTickControl is null");
+
+        UpdateTickControl.UpdateDeltaTime(_now);
+        float dt = UpdateTickControl.GetDeltaTime();
+
+        _Update(dt);
+        _Draw();
+    }
+
+    private void _Update(float _dt) {
+        InputMgr.Update();
+        SceneMgr.Update(_dt);
+    }
+
+    private void _Draw() {
+        DrawSys.BeginFrame();
+        SceneMgr.Draw(DrawSys);
+        _ShowFps();
+        DrawSys.EndFrame();
+    }
+
+    private void _ShowFps() {
+        FontDrawContext dc = new FontDrawContext(DrawSys.GetContext(), FontManager.FontId.DEBUG);
+        dc.DrawFormatText(40, 40, "FPS: %.1f", UpdateTickControl.GetFps());
+    }
+
+    private void _StartUpdate(Stage _stage) {
         MainLoop = new AnimationTimer() {
             @Override
             public void handle(long _now) {
-                float dt = (LastFrameTime < 0) ? 0.0f : (_now - LastFrameTime) * 1E-9f;
-                LastFrameTime = _now;
-                _Update(dt);
-                _Draw();
+                _MainLoop(_now);
             }
         };
 
@@ -120,6 +141,7 @@ public class UnoApp extends Application {
     }
 
     public AppWindow GetWindow() { return Window; }
+    public UpdateTickCtrl GetUpdateTickCtrl() { return UpdateTickControl; }
     public FontManager GetFontManager() { return FontMgr; }
     public DrawSystem GetDrawSystem() { return DrawSys; }
     public GUISystem GetGUISystem() { return GUISys; }
@@ -128,10 +150,11 @@ public class UnoApp extends Application {
 
     private AppWindow Window;
     private AnimationTimer MainLoop;
-    private long LastFrameTime = -1;
+    private UpdateTickCtrl UpdateTickControl;
     private FontManager FontMgr;
     private DrawSystem DrawSys;
     private GUISystem GUISys;
+    private Properties UserConfigProps;
     private InputManager InputMgr;
     private SceneManager SceneMgr;
 }
